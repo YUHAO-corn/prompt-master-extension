@@ -1,6 +1,9 @@
 # 🌊 Prompt Master Extension
 
-> **Your Prompts, All In One Place. Everywhere.**
+> **Your Prompts, All In One Place. Everywhere.**  
+> **让您的提示词，随处可见，随时可用**
+
+**English | [中文](README.md)**
 
 A powerful Chrome extension for AI prompt management that helps you save, organize, and optimize your prompts across all AI platforms.
 
@@ -272,4 +275,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Made with ❤️ by the Aetherflow Team**
 
-*Simplifying AI prompt management, one shortcut at a time.* 
+*Simplifying AI prompt management, one shortcut at a time.*
+
+---
+
+**English | [中文](README.md)** 
