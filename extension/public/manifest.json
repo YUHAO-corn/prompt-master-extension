@@ -1,0 +1,64 @@
+{
+  "manifest_version": 3,
+  "name": "Prompt Master Extension",
+  "version": "1.0.0",
+  "description": "Your Prompts, All In One Place. Everywhere. A powerful Chrome extension for AI prompt management across all platforms.",
+  "permissions": [
+    "sidePanel", 
+    "storage", 
+    "clipboardWrite", 
+    "tabs", 
+    "contextMenus", 
+    "scripting", 
+    "activeTab"
+  ],
+  "host_permissions": [
+    "*://*.openai.com/*",
+    "*://*.anthropic.com/*",
+    "*://*.google.com/*",
+    "*://*.gemini.google.com/*",
+    "*://*.bing.com/*",
+    "*://*.character.ai/*",
+    "*://*.poe.com/*",
+    "<all_urls>"
+  ],
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle",
+      "all_frames": true
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "styles/*.css",
+        "images/*",
+        "assets/*"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "action": {
+    "default_title": "Prompt Master - AI Prompt Management"
+  },
+  "icons": {
+    "16": "assets/icons/icon16.png",
+    "32": "assets/icons/icon32.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self';",
+    "sandbox": "sandbox allow-scripts allow-forms allow-popups allow-modals; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://apis.google.com https://www.gstatic.com https://www.googleapis.com https://securetoken.googleapis.com; child-src 'self';"
+  }
+} 

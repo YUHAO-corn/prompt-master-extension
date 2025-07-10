@@ -1,0 +1,1 @@
+export { RewardsCenter } from './RewardsCenter'; 

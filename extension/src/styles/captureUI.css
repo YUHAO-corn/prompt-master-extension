@@ -1,0 +1,67 @@
+/* Styles for AetherFlow Capture UI */
+@import './design-tokens.css';
+@import './toolbar.css';
+@import './previewModal.css';
+@import './optimizationPopup.css';
+@import './toast.css';
+
+/* 
+ * 所有CSS变量已经在design-tokens.css中定义和维护
+ * 此文件现在仅作为集中导入其他样式文件的入口
+ */
+
+/* --- 注释保留以记录历史 --- */
+
+/*
+以前的变量定义已移至design-tokens.css
+
+以前样式的注释保留，以供参考:
+.aetherflow-capture-optimize-link-container {
+    padding: 8px 12px 0; 
+    margin-top: -4px; 
+}
+
+.aetherflow-capture-optimize-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    border: none;
+    background: none;
+    color: var(--aetherflow-accent, #3b82f6);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.15s ease;
+}
+
+.aetherflow-capture-optimize-link:hover {
+    background-color: var(--aetherflow-accent-rgb, rgba(59, 130, 246, 0.1));
+}
+
+.aetherflow-capture-optimize-link svg {
+    width: 14px;
+    height: 14px;
+    stroke-width: 2;
+}
+
+.aetherflow-capture-modal.aetherflow-modal-loading .aetherflow-capture-modal-body textarea {
+    opacity: 0.6;
+    pointer-events: none; 
+}
+
+.aetherflow-capture-modal.aetherflow-modal-loading .aetherflow-capture-optimize-link {
+    opacity: 0.6;
+    cursor: default;
+    pointer-events: none;
+}
+
+.aetherflow-capture-modal.aetherflow-modal-loading .aetherflow-capture-optimize-link::after {
+    content: '⏳';
+    display: inline-block;
+    margin-left: 6px;
+    font-size: 12px;
+}
+*/
+

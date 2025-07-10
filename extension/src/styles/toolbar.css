@@ -1,0 +1,96 @@
+/* Styles for AetherFlow Capture Toolbar */
+
+.aetherflow-capture-toolbar {
+  position: absolute;
+  z-index: 9999;
+  background-color: white;
+  border-radius: var(--aetherflow-radius-md);
+  box-shadow: var(--aetherflow-shadow-sm);
+  padding: 4px; /* 减小内边距使工具栏更紧凑 */
+  display: inline-flex;
+  align-items: center;
+  gap: 2px; /* 减小间距 */
+  white-space: nowrap;
+  font-family: var(--aetherflow-font-family);
+  transition: opacity var(--aetherflow-transition-fast);
+  border: 1px solid var(--aetherflow-border);
+}
+
+/* 共享按钮样式 */
+.aetherflow-capture-toolbar button {
+  background: none;
+  border: none;
+  width: 28px; /* 固定宽度确保一致性 */
+  height: 28px; /* 减小按钮尺寸 */
+  padding: 5px; /* 微调内边距 */
+  margin: 0;
+  cursor: pointer;
+  color: var(--aetherflow-primary);
+  border-radius: 50%; /* 保持圆形按钮 */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+  transition: background-color var(--aetherflow-transition-fast);
+}
+
+.aetherflow-capture-toolbar button:hover {
+  background-color: rgba(var(--aetherflow-primary-rgb), 0.08);
+}
+
+/* 确保SVG正确继承颜色并设置统一尺寸 */
+.aetherflow-capture-toolbar button svg {
+  width: 16px; /* 减小图标尺寸 */
+  height: 16px;
+  display: block;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--aetherflow-icon-stroke-width);
+}
+
+/* 针对主要使用填充的图标覆盖样式 */
+.aetherflow-capture-toolbar button.aetherflow-capture-action-button svg,
+.aetherflow-capture-toolbar button.aetherflow-capture-logo-button svg {
+  fill: currentColor;
+  stroke: none;
+}
+
+/* 专门为Capture按钮内部的线条(白色加号)设置样式 */
+.aetherflow-capture-toolbar button.aetherflow-capture-action-button svg line {
+  stroke: white; /* 保持与背景对比 */
+  stroke-width: 2;
+}
+
+/* 针对关闭(X)按钮专门设置 */
+.aetherflow-capture-disable-button svg {
+  stroke-width: 2.5;
+  fill: none;
+}
+
+/* 使用flex order排列按钮顺序 */
+.aetherflow-capture-disable-button { order: 1; } /* 关闭按钮 */
+.aetherflow-capture-action-button { order: 2; } /* 主剪藏按钮 */
+.aetherflow-capture-optimize-button { order: 3; } /* 优化按钮 */
+.aetherflow-capture-logo-button { order: 4; } /* Logo按钮 */
+
+/* 确保优化按钮图标采用适当样式 */
+.aetherflow-capture-optimize-button svg {
+  fill: currentColor;
+  stroke: none;
+}
+
+/* 确保logo按钮图标采用适当样式 */
+.aetherflow-capture-logo-button svg {
+  fill: currentColor;
+}
+
+/* 新增：针对特定SVG图标的专用样式 */
+.optimize-icon {
+  fill: currentColor !important;
+  stroke: none !important;
+}
+
+.logo-icon {
+  fill: currentColor !important;
+  stroke: none !important;
+} 

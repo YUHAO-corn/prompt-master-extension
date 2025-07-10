@@ -1,0 +1,186 @@
+/* AetherFlow 统一设计令牌 */
+
+/* 主题切换的基础变量 */
+:root {
+  /* 字体系统 */
+  --aetherflow-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+  --aetherflow-font-size-xs: 0.75rem;    /* 12px */
+  --aetherflow-font-size-sm: 0.875rem;   /* 14px */
+  --aetherflow-font-size-base: 1rem;     /* 16px */
+  --aetherflow-font-size-lg: 1.125rem;   /* 18px */
+  --aetherflow-font-weight-normal: 400;
+  --aetherflow-font-weight-medium: 500;
+  --aetherflow-font-weight-bold: 600;
+  
+  /* 圆角系统 */
+  --aetherflow-radius-sm: 4px;
+  --aetherflow-radius-md: 6px;
+  --aetherflow-radius-lg: 8px;
+  --aetherflow-radius-xl: 12px;
+  --aetherflow-radius-full: 9999px;      /* 工具栏圆形按钮 */
+  
+  /* 过渡动画 */
+  --aetherflow-transition-fast: 0.15s ease;
+  --aetherflow-transition-normal: 0.25s ease;
+  --aetherflow-transition-slow: 0.4s ease-in-out;
+  
+  /* 图标系统 */
+  --aetherflow-icon-size-sm: 14px;
+  --aetherflow-icon-size-md: 18px;
+  --aetherflow-icon-size-lg: 24px;
+  --aetherflow-icon-stroke-width: 2;
+}
+
+/* 深色主题变量 */
+:root.dark, .dark {
+  /* 品牌色系统 - 简化色阶 */
+  --aetherflow-primary: #8b5cf6;         /* 主紫色 */
+  --aetherflow-primary-rgb: 139, 92, 246;
+  --aetherflow-primary-dark: #7c3aed;    /* 深紫色 */
+  --aetherflow-primary-light: #a78bfa;   /* 浅紫色 */
+  --aetherflow-secondary: #3b82f6;       /* 蓝色强调 */
+  --aetherflow-secondary-rgb: 59, 130, 246;
+  
+  /* 中性色系统 - 增强对比度 */
+  --aetherflow-dark: #1e293b;            /* 深灰色文本及背景 */
+  --aetherflow-light: #f8fafc;           /* 浅色背景 */
+  --aetherflow-gray: #94a3b8;            /* 中性灰色文本 - 提高对比度 */
+  --aetherflow-gray-light: #cbd5e1;      /* 浅灰色文本 - 提高对比度 */
+  --aetherflow-border: #334155;          /* 边框色 */
+  
+  /* UI元素背景 - 简化透明度使用 */
+  --aetherflow-bg-header: #1e293b;       /* 头部背景 */
+  --aetherflow-bg-main: #0f172a;         /* 主内容区背景 */
+  --aetherflow-bg-card: #1e293b;         /* 卡片背景 */
+  --aetherflow-bg-card-hover: #334155;   /* 卡片悬浮背景 */
+  --aetherflow-bg-input: #1e293b;        /* 输入框背景 */
+  --aetherflow-bg-button: #6d28d9;       /* 按钮背景 */
+  --aetherflow-bg-button-hover: #7c3aed; /* 按钮悬浮背景 */
+  
+  /* 文本颜色 - 提高对比度 */
+  --aetherflow-text-primary: #f8fafc;    /* 主要文本 */
+  --aetherflow-text-secondary: #e2e8f0;  /* 次要文本 - 提高对比度 */
+  --aetherflow-text-muted: #94a3b8;      /* 弱化文本 - 提高对比度 */
+  
+  /* 阴影系统 - 简化 */
+  --aetherflow-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
+  --aetherflow-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  --aetherflow-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.2);
+  --aetherflow-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.25);
+  
+  /* 间距系统 */
+  --aetherflow-spacing-xs: 0.25rem;      /* 4px */
+  --aetherflow-spacing-sm: 0.5rem;       /* 8px */
+  --aetherflow-spacing-md: 0.75rem;      /* 12px */
+  --aetherflow-spacing-base: 1rem;       /* 16px */
+  --aetherflow-spacing-lg: 1.5rem;       /* 24px */
+  --aetherflow-spacing-xl: 2rem;         /* 32px */
+  
+  /* 按钮系统 - 简化 */
+  --aetherflow-button-primary-bg: var(--aetherflow-primary);
+  --aetherflow-button-primary-text: white;
+  --aetherflow-button-primary-hover: var(--aetherflow-primary-dark);
+  
+  --aetherflow-button-secondary-bg: transparent;
+  --aetherflow-button-secondary-text: var(--aetherflow-primary-light);
+  --aetherflow-button-secondary-border: var(--aetherflow-primary);
+  --aetherflow-button-secondary-hover: rgba(var(--aetherflow-primary-rgb), 0.15);
+  
+  /* 输入框系统 */
+  --aetherflow-input-bg: #1e293b;
+  --aetherflow-input-border: #334155;
+  --aetherflow-input-text: var(--aetherflow-light);
+  --aetherflow-input-placeholder: var(--aetherflow-gray);
+  --aetherflow-input-radius: var(--aetherflow-radius-md);
+  --aetherflow-input-focus-border: var(--aetherflow-primary);
+  --aetherflow-input-focus-shadow: 0 0 0 1px rgba(var(--aetherflow-primary-rgb), 0.25);
+}
+
+/* 浅色主题变量 */
+:root, :root:not(.dark), body:not(.dark) {
+  /* 品牌色系统 - 简化色阶 */
+  --aetherflow-primary: #7c3aed;         /* 主紫色 */
+  --aetherflow-primary-rgb: 124, 58, 237;
+  --aetherflow-primary-dark: #6d28d9;    /* 深紫色 */
+  --aetherflow-primary-light: #a78bfa;   /* 浅紫色 */
+  --aetherflow-secondary: #3b82f6;       /* 蓝色强调 */
+  --aetherflow-secondary-rgb: 59, 130, 246;
+  
+  /* 中性色系统 */
+  --aetherflow-dark: #1e293b;            /* 深灰色文本 */
+  --aetherflow-light: #f8fafc;           /* 浅色背景 */
+  --aetherflow-gray: #64748b;            /* 中性灰色文本 */
+  --aetherflow-gray-light: #94a3b8;      /* 浅灰色文本 */
+  --aetherflow-border: #e2e8f0;          /* 边框色 */
+  
+  /* UI元素背景 - 简化透明度使用 */
+  --aetherflow-bg-header: #ffffff;       /* 头部背景 */
+  --aetherflow-bg-main: #f8fafc;         /* 主内容区背景 */
+  --aetherflow-bg-card: #ffffff;         /* 卡片背景 */
+  --aetherflow-bg-card-hover: #f1f5f9;   /* 卡片悬浮背景 */
+  --aetherflow-bg-input: #ffffff;        /* 输入框背景 */
+  --aetherflow-bg-button: #7c3aed;       /* 按钮背景 */
+  --aetherflow-bg-button-hover: #6d28d9; /* 按钮悬浮背景 */
+  
+  /* 文本颜色 */
+  --aetherflow-text-primary: #1e293b;    /* 主要文本 */
+  --aetherflow-text-secondary: #334155;  /* 次要文本 */
+  --aetherflow-text-muted: #64748b;      /* 弱化文本 */
+  
+  /* 阴影系统 - 简化 */
+  --aetherflow-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --aetherflow-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --aetherflow-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --aetherflow-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.15);
+  
+  /* 按钮系统 - 简化 */
+  --aetherflow-button-primary-bg: var(--aetherflow-primary);
+  --aetherflow-button-primary-text: white;
+  --aetherflow-button-primary-hover: var(--aetherflow-primary-dark);
+  
+  --aetherflow-button-secondary-bg: transparent;
+  --aetherflow-button-secondary-text: var(--aetherflow-primary);
+  --aetherflow-button-secondary-border: var(--aetherflow-primary-light);
+  --aetherflow-button-secondary-hover: rgba(var(--aetherflow-primary-rgb), 0.1);
+  
+  /* 输入框系统 */
+  --aetherflow-input-bg: white;
+  --aetherflow-input-border: #d1d5db;
+  --aetherflow-input-text: var(--aetherflow-dark);
+  --aetherflow-input-placeholder: var(--aetherflow-gray);
+  --aetherflow-input-radius: var(--aetherflow-radius-md);
+  --aetherflow-input-focus-border: var(--aetherflow-primary);
+  --aetherflow-input-focus-shadow: 0 0 0 1px rgba(var(--aetherflow-primary-rgb), 0.25);
+}
+
+/* 默认使用浅色主题 */
+:root {
+  color-scheme: light;
+}
+
+body {
+  /* 添加主题切换的过渡效果 */
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+body.dark {
+  color-scheme: dark;
+}
+
+/* 媒体查询以支持系统主题首选项 */
+@media (prefers-color-scheme: dark) {
+  body.system-theme {
+    color-scheme: dark;
+  }
+  
+  body.system-theme:not(.dark) {
+    /* 添加dark类以确保UI使用深色主题 */
+    --is-dark: true;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  body.system-theme {
+    color-scheme: light;
+  }
+} 

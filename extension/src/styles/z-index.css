@@ -1,0 +1,52 @@
+/**
+ * AetherFlow项目z-index层级管理
+ * 
+ * 本文件定义了项目中所有z-index值，使用CSS变量进行统一管理
+ * 所有组件应从此处引用z-index值，避免使用硬编码数值
+ */
+
+:root {
+  /* 基础层级 */
+  --z-base: 0;
+  --z-raised: 10;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-drawer: 300;
+  --z-overlay: 400;
+  --z-modal: 500;
+  --z-notification: 600;
+  --z-highest: 900;
+  
+  /* 子层级 - 抬升内容 */
+  --z-raised-content: 10;
+  
+  /* 子层级 - 下拉菜单 */
+  --z-dropdown-menu: 100;
+  --z-dropdown-selector: 110;
+  
+  /* 子层级 - 侧边抽屉 */
+  --z-drawer-backdrop: 300;
+  --z-drawer-container: 310;
+  --z-drawer-content: 320;
+  
+  /* 子层级 - 背景遮罩 */
+  --z-overlay-base: 400;
+  
+  /* 子层级 - 模态窗口 */
+  --z-modal-backdrop: 500;
+  --z-modal-container: 510;
+  --z-modal-content: 520;
+  
+  /* 子层级 - 通知 */
+  --z-notification-toast: 600;
+  --z-notification-alert: 610;
+  
+  /* 特殊层级 - 认证相关 */
+  --z-auth-backdrop: 700;
+  --z-auth-container: 710;
+  
+  /* 跨域层级 - 内容脚本 */
+  --content-z-dropdown: 10100;
+  --content-z-notification: 10600;
+  --content-z-highest: 10900;
+} 

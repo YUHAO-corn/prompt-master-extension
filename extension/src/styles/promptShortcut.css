@@ -1,0 +1,240 @@
+/* 
+ * PromptShortcut 组件专用样式
+ * 这个文件将被编译并注入到 Shadow DOM 中
+ * 包含所有需要的样式类
+ */
+
+/* 全局盒模型设置 */
+* {
+  box-sizing: border-box;
+}
+
+/* 基础容器 - 改为浅色主题 */
+.bg-magic-800 {
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  width: 250px; /* 减小宽度使其更紧凑 */
+}
+
+.p-2 {
+  padding: 0.25rem;
+}
+
+.rounded-lg {
+  border-radius: 6px;
+}
+
+.shadow-xl {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+.w-80 {
+  width: 250px;
+}
+
+/* 文本颜色改为深色 */
+.text-magic-100 {
+  color: #1e293b;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.box-border {
+  box-sizing: border-box;
+}
+
+/* 搜索输入框 - 改为浅色风格 */
+.w-full {
+  width: 100%;
+}
+
+.bg-magic-700 {
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  color: #1e293b;
+}
+
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.px-3 {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.px-0 {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.rounded-md {
+  border-radius: 6px;
+}
+
+.focus\:outline-none:focus {
+  outline: none;
+}
+
+.focus\:ring-1:focus {
+  box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.25);
+}
+
+.focus\:ring-brand-blue:focus {
+  box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.25);
+}
+
+.placeholder-magic-400::placeholder {
+  color: #94a3b8;
+}
+
+/* 建议列表 */
+.mt-1 {
+  margin-top: 0.25rem;
+}
+
+.max-h-60 {
+  max-height: 180px;
+}
+
+.overflow-auto {
+  overflow: auto;
+}
+
+/* 自定义滚动条 */
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+
+.scrollbar-thumb-rounded {
+  /* 移除圆角，防止可能的圆形裁剪 */
+}
+
+.scrollbar-track-magic-800 {
+  /* 简化滚动条样式 */
+}
+
+.scrollbar-thumb-magic-600 {
+  /* 简化滚动条样式 */
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: rgba(167, 139, 250, 0.5);
+  border-radius: 2px;
+}
+
+/* 建议项 - 改为浅色风格 */
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.py-2 {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+/* 高亮项背景色 */
+.bg-magic-700 {
+  background-color: rgba(139, 92, 246, 0.08);
+}
+
+.hover\:bg-magic-700:hover {
+  background-color: rgba(139, 92, 246, 0.12);
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text-sm {
+  font-size: 12px;
+}
+
+/* 高亮文本 */
+.text-brand-blue {
+  color: #8b5cf6;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+/* 登录提示 */
+.text-center {
+  text-align: center;
+}
+
+.text-magic-300 {
+  color: #64748b;
+  font-size: 12px;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
+
+.text-white {
+  color: white;
+}
+
+.text-xs {
+  font-size: 11px;
+}
+
+.bg-brand-blue {
+  background-color: #8b5cf6;
+}
+
+.rounded {
+  border-radius: 4px;
+}
+
+/* 登录按钮 */
+button.bg-brand-blue {
+  padding: 4px 8px; /* 减小内边距 */
+  background-color: #8b5cf6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 500;
+  transition: background-color 0.15s ease;
+}
+
+button.bg-brand-blue:hover {
+  background-color: #7c3aed;
+} 

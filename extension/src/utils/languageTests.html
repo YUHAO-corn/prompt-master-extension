@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>语言工具测试</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    h1, h2 {
+      color: #333;
+    }
+    .test-section {
+      background: white;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .test-case {
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
+    }
+    .test-case:last-child {
+      border-bottom: none;
+    }
+    .result {
+      margin-top: 10px;
+      padding: 10px;
+      background: #f9f9f9;
+      border-left: 3px solid #ddd;
+    }
+    .success {
+      border-left-color: #4CAF50;
+    }
+    .error {
+      border-left-color: #F44336;
+    }
+    button {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+    button:hover {
+      background: #45a049;
+    }
+    .log {
+      font-family: monospace;
+      white-space: pre-wrap;
+      max-height: 300px;
+      overflow-y: auto;
+      background: #333;
+      color: #fff;
+      padding: 10px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <h1>语言工具函数测试</h1>
+  
+  <div class="test-section">
+    <h2>1. 语言检测测试</h2>
+    <button id="run-detection-test">运行语言检测测试</button>
+    <div id="detection-results"></div>
+  </div>
+  
+  <div class="test-section">
+    <h2>2. 翻译功能测试</h2>
+    <button id="run-translation-test">运行翻译测试</button>
+    <div id="translation-results"></div>
+  </div>
+  
+  <div class="test-section">
+    <h2>3. 语言一致性处理测试</h2>
+    <button id="run-consistency-test">运行一致性测试</button>
+    <div id="consistency-results"></div>
+  </div>
+  
+  <div class="test-section">
+    <h2>控制台日志</h2>
+    <div id="log" class="log"></div>
+  </div>
+
+  <script>
+    // 保存原始的console.log
+    const originalConsoleLog = console.log;
+    const originalConsoleError = console.error;
+    
+    // 重写console.log，将输出同时显示在页面上
+    console.log = function() {
+      // 调用原始的console.log
+      originalConsoleLog.apply(console, arguments);
+      
+      // 将内容添加到页面
+      const logElement = document.getElementById('log');
+      const args = Array.from(arguments).map(arg => 
+        typeof arg === 'object' ? JSON.stringify(arg, null, 2) : arg
+      ).join(' ');
+      logElement.innerHTML += args + '\n';
+      
+      // 滚动到底部
+      logElement.scrollTop = logElement.scrollHeight;
+    };
+    
+    // 重写console.error
+    console.error = function() {
+      // 调用原始的console.error
+      originalConsoleError.apply(console, arguments);
+      
+      // 将内容添加到页面（以红色显示）
+      const logElement = document.getElementById('log');
+      const args = Array.from(arguments).map(arg => 
+        typeof arg === 'object' ? JSON.stringify(arg, null, 2) : arg
+      ).join(' ');
+      logElement.innerHTML += '<span style="color: #ff6b6b;">' + args + '</span>\n';
+      
+      // 滚动到底部
+      logElement.scrollTop = logElement.scrollHeight;
+    };
+
+    // 定义语言类型
+    const LanguageType = {
+      ZH: 'zh',
+      EN: 'en',
+      JA: 'ja',
+      KO: 'ko',
+      RU: 'ru',
+      FR: 'fr',
+      DE: 'de',
+      ES: 'es',
+      OTHER: 'other'
+    };
+
+    // 检测文本的主要语言
+    function detectMainLanguage(text) {
+      if (!text || text.trim() === '') {
+        return LanguageType.OTHER;
+      }
+
+      // 去除数字、标点符号和空格等通用字符
+      const cleanText = text.replace(/[0-9\s.,!?;:'"()\[\]{}]/g, '');
+      if (!cleanText) {
+        return LanguageType.OTHER;
+      }
+      
+      // 各语言特征检测
+      const langPatterns = {
+        [LanguageType.ZH]: /[\u4e00-\u9fa5]/g,             // 中文
+        [LanguageType.EN]: /[a-zA-Z]{2,}/g,                // 英文
+        [LanguageType.JA]: /[\u3040-\u30FF\u3400-\u4DBF]/g, // 日文(平假名、片假名及部分汉字)
+        [LanguageType.KO]: /[\uAC00-\uD7A3]/g,             // 韩文
+        [LanguageType.RU]: /[\u0400-\u04FF]/g,             // 俄文
+        [LanguageType.FR]: /[çéàèùâêîôûëïüÿæœ]/gi,         // 法文特殊字符
+        [LanguageType.DE]: /[äöüßÄÖÜ]/g,                   // 德文特殊字符
+        [LanguageType.ES]: /[áéíóúüñ¿¡]/gi,                // 西班牙文特殊字符
+      };
+      
+      // 计算各语言字符出现次数
+      const charCounts = {
+        [LanguageType.ZH]: 0, 
+        [LanguageType.EN]: 0, 
+        [LanguageType.JA]: 0, 
+        [LanguageType.KO]: 0, 
+        [LanguageType.RU]: 0, 
+        [LanguageType.FR]: 0, 
+        [LanguageType.DE]: 0, 
+        [LanguageType.ES]: 0, 
+        [LanguageType.OTHER]: 0
+      };
+      
+      // 特殊处理英文计数方式
+      const englishWords = (cleanText.match(langPatterns[LanguageType.EN]) || []).join('').length;
+      charCounts[LanguageType.EN] = englishWords;
+      
+      // 其他语言按字符计数
+      Object.entries(langPatterns).forEach(([lang, pattern]) => {
+        if (lang !== LanguageType.EN) {
+          charCounts[lang] = (cleanText.match(pattern) || []).length;
+        }
+      });
+      
+      // 中文优先级特殊处理：如果有大量中文字符且远多于其他语言，则认为是中文
+      if (charCounts[LanguageType.ZH] > 3 && charCounts[LanguageType.ZH] >= charCounts[LanguageType.JA] * 2) {
+        return LanguageType.ZH;
+      }
+      
+      // 找出最多字符的语言
+      let dominantLang = LanguageType.OTHER;
+      let maxCount = 0;
+      
+      Object.entries(charCounts).forEach(([lang, count]) => {
+        if (count > maxCount) {
+          maxCount = count;
+          dominantLang = lang;
+        }
+      });
+      
+      // 如果没有明显的主导语言，且有英文内容，则返回英文
+      if (dominantLang === LanguageType.OTHER && charCounts[LanguageType.EN] > 0) {
+        return LanguageType.EN;
+      }
+      
+      return dominantLang;
+    }
+
+    // 翻译函数（需要在实际扩展环境中测试）
+    async function translateText(text, targetLang) {
+      // 如果目标语言不是zh或en，转换为en以确保API支持
+      const normalizedTargetLang = (targetLang !== LanguageType.ZH && targetLang !== LanguageType.EN) ? LanguageType.EN : targetLang;
+
+      // 如果目标语言是other，直接返回原文
+      if (targetLang === LanguageType.OTHER) {
+        return text;
+      }
+      
+      // 尝试GoogleAPI (无CORS限制，最可能成功)
+      try {
+        console.log('  尝试使用Google翻译API...');
+        const translated = await translateWithGoogleAPI(text, normalizedTargetLang);
+        if (translated && translated !== text) {
+          console.log('  Google翻译API成功!');
+          return translated;
+        }
+      } catch (error) {
+        console.error('  Google翻译API失败:', error);
+      }
+      
+      // 尝试主要API
+      try {
+        console.log('  尝试使用主要翻译API...');
+        const translated = await translateWithPrimaryAPI(text, normalizedTargetLang);
+        if (translated && translated !== text) {
+          console.log('  主要翻译API成功!');
+          return translated;
+        }
+      } catch (error) {
+        console.error('  主要翻译API失败:', error);
+      }
+      
+      // 尝试备用API 1
+      try {
+        console.log('  尝试使用备用翻译API 1...');
+        const translated = await translateWithBackupAPI1(text, normalizedTargetLang);
+        if (translated && translated !== text) {
+          console.log('  备用翻译API 1成功!');
+          return translated;
+        }
+      } catch (error) {
+        console.error('  备用翻译API 1失败:', error);
+      }
+
+      // 最后尝试简单字典翻译
+      if (text.length < 100) {
+        console.log('  尝试使用简单字典翻译...');
+        const simpleDictResult = simpleTranslate(text, normalizedTargetLang);
+        if (simpleDictResult !== text) {
+          console.log('  简单字典翻译成功!');
+          return simpleDictResult;
+        }
+      }
+      
+      console.warn('  所有翻译方法均失败，返回原文');
+      return text;
+    }
+
+    // Google翻译API - 无CORS限制，更可能成功
+    async function translateWithGoogleAPI(text, targetLang) {
+      try {
+        // 使用免费的Google翻译API代理
+        const apiUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`;
+        
+        const response = await fetch(apiUrl);
+        
+        if (!response.ok) {
+          throw new Error(`API返回错误: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        // Google翻译API返回的数据结构比较特殊
+        let translatedText = '';
+        if (data && data[0]) {
+          data[0].forEach(item => {
+            if (item[0]) {
+              translatedText += item[0];
+            }
+          });
+        }
+        
+        return translatedText || text;
+      } catch (error) {
+        console.error('Google翻译API请求失败:', error);
+        throw error;
+      }
+    }
+
+    // 主要翻译API
+    async function translateWithPrimaryAPI(text, targetLang) {
+      try {
+        // 使用CORS代理
+        const apiUrl = 'https://api.mymemory.translated.net/get';
+        const langCode = targetLang === LanguageType.ZH ? 'zh-CN' : 'en-GB';
+        const url = `${apiUrl}?q=${encodeURIComponent(text)}&langpair=auto|${langCode}`;
+        
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+          throw new Error(`API返回错误: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        return data.responseData?.translatedText || text;
+      } catch (error) {
+        console.error('主要翻译API请求失败:', error);
+        throw error;
+      }
+    }
+
+    // 备用翻译API 1
+    async function translateWithBackupAPI1(text, targetLang) {
+      try {
+        // 使用另一个免费翻译API
+        const apiUrl = 'https://lingva.ml/api/v1/auto';
+        const url = `${apiUrl}/${targetLang}/${encodeURIComponent(text)}`;
+        
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+          throw new Error(`API返回错误: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        return data.translation || text;
+      } catch (error) {
+        console.error('备用翻译API 1请求失败:', error);
+        throw error;
+      }
+    }
+
+    // 简单字典翻译
+    function simpleTranslate(text, targetLang) {
+      // 简单的中英文常用词典
+      const zhToEnDict = {
+        '你好': 'Hello',
+        '谢谢': 'Thank you',
+        '是': 'Yes',
+        '否': 'No',
+        '请': 'Please',
+        '中文': 'Chinese',
+        '英文': 'English',
+        '翻译': 'Translation',
+        '测试': 'Test',
+        '提示词': 'Prompt',
+        '世界': 'World'
+      };
+      
+      const enToZhDict = {
+        'Hello': '你好',
+        'Thank you': '谢谢',
+        'Yes': '是',
+        'No': '否',
+        'Please': '请',
+        'Chinese': '中文',
+        'English': '英文',
+        'Translation': '翻译',
+        'Test': '测试',
+        'Prompt': '提示词',
+        'World': '世界'
+      };
+      
+      // 选择字典
+      const dict = targetLang === LanguageType.ZH ? enToZhDict : zhToEnDict;
+      
+      // 尝试字典翻译
+      return Object.entries(dict).reduce((result, [key, value]) => {
+        return result.replace(new RegExp(key, 'gi'), value);
+      }, text);
+    }
+
+    // 测试语言检测功能
+    async function testLanguageDetection() {
+      const testCases = [
+        { text: '这是一段中文文本，用于测试语言检测功能。', expected: LanguageType.ZH, name: '纯中文' },
+        { text: 'This is an English text for testing language detection.', expected: LanguageType.EN, name: '纯英文' },
+        { text: '这是一段混合了English的中文文本。', expected: LanguageType.ZH, name: '中文为主的混合文本' },
+        { text: 'This text contains some 中文 words.', expected: LanguageType.EN, name: '英文为主的混合文本' },
+        { text: '123456789', expected: LanguageType.OTHER, name: '纯数字' },
+        // 新增其他语言测试
+        { text: 'こんにちは、これは日本語のテストです。', expected: LanguageType.JA, name: '日语测试' },
+        { text: '안녕하세요, 이것은 한국어 테스트입니다.', expected: LanguageType.KO, name: '韩语测试' },
+        { text: 'Привет, это тест на русском языке.', expected: LanguageType.RU, name: '俄语测试' },
+        { text: 'Bonjour, ceci est un test en français.', expected: LanguageType.FR, name: '法语测试' },
+        { text: 'Hallo, dies ist ein Test auf Deutsch.', expected: LanguageType.DE, name: '德语测试' },
+        { text: '¡Hola! Esta es una prueba en español.', expected: LanguageType.ES, name: '西班牙语测试' },
+        // 混合语言测试
+        { text: 'This is mixed: 这是中文 and こんにちは with Привет', expected: LanguageType.EN, name: '多语言混合测试' }
+      ];
+
+      console.log('===== 语言检测测试 =====');
+      
+      const resultsDiv = document.getElementById('detection-results');
+      resultsDiv.innerHTML = '';
+      
+      for (const testCase of testCases) {
+        const detected = detectMainLanguage(testCase.text);
+        const isSuccess = detected === testCase.expected;
+        
+        console.log(`${testCase.name}: ${isSuccess ? '✅ 通过' : '❌ 失败'}`);
+        console.log(`  输入: "${testCase.text.substring(0, 30)}${testCase.text.length > 30 ? '...' : ''}"`);
+        console.log(`  检测结果: ${detected}`);
+        console.log(`  期望结果: ${testCase.expected}`);
+        
+        // 添加到页面
+        const caseDiv = document.createElement('div');
+        caseDiv.className = `test-case`;
+        caseDiv.innerHTML = `
+          <div><strong>${testCase.name}</strong></div>
+          <div>输入: ${testCase.text}</div>
+          <div class="result ${isSuccess ? 'success' : 'error'}">
+            检测结果: ${detected} ${isSuccess ? '✅' : '❌'}<br>
+            期望结果: ${testCase.expected}
+          </div>
+        `;
+        resultsDiv.appendChild(caseDiv);
+      }
+    }
+
+    // 测试翻译功能
+    async function testTranslation() {
+      const testCases = [
+        { 
+          text: 'Hello, this is a test for the translation functionality.', 
+          targetLang: LanguageType.ZH,
+          name: '英文翻译为中文'
+        },
+        { 
+          text: '你好，这是一个用于测试翻译功能的文本。', 
+          targetLang: LanguageType.EN,
+          name: '中文翻译为英文'
+        },
+        // 简单短语翻译测试 - 更容易通过字典翻译机制
+        { 
+          text: 'Hello world', 
+          targetLang: LanguageType.ZH,
+          name: '简单英文短语翻译为中文'
+        },
+        { 
+          text: '你好世界', 
+          targetLang: LanguageType.EN,
+          name: '简单中文短语翻译为英文'
+        }
+      ];
+
+      console.log('\n===== 翻译功能测试 =====');
+      
+      const resultsDiv = document.getElementById('translation-results');
+      resultsDiv.innerHTML = '';
+      
+      for (const testCase of testCases) {
+        console.log(`测试: ${testCase.name}`);
+        console.log(`  原文: "${testCase.text}"`);
+        
+        const caseDiv = document.createElement('div');
+        caseDiv.className = 'test-case';
+        caseDiv.innerHTML = `
+          <div><strong>${testCase.name}</strong></div>
+          <div>原文: ${testCase.text}</div>
+          <div class="result">翻译中...</div>
+        `;
+        resultsDiv.appendChild(caseDiv);
+        
+        try {
+          console.log('  开始翻译...');
+          const translated = await translateText(testCase.text, testCase.targetLang);
+          console.log(`  翻译结果: "${translated}"`);
+          
+          // 简单验证翻译结果语言
+          const resultLang = detectMainLanguage(translated);
+          const langMatch = resultLang === testCase.targetLang;
+          console.log(`  结果语言检测: ${resultLang} (${langMatch ? '✅ 匹配目标语言' : '❌ 与目标语言不匹配'})`);
+          
+          // 更新页面
+          const resultDiv = caseDiv.querySelector('.result');
+          resultDiv.innerHTML = `
+            翻译结果: ${translated}<br>
+            结果语言: ${resultLang} ${langMatch ? '✅' : '❌'}
+          `;
+          resultDiv.className = `result ${langMatch ? 'success' : 'error'}`;
+        } catch (error) {
+          console.error(`  翻译出错: ${error.message}`);
+          
+          // 更新页面
+          const resultDiv = caseDiv.querySelector('.result');
+          resultDiv.innerHTML = `翻译失败: ${error.message}`;
+          resultDiv.className = 'result error';
+        }
+      }
+    }
+
+    // 测试语言一致性处理
+    async function testLanguageConsistency() {
+      const testCases = [
+        {
+          original: '这是原始的中文输入',
+          result: 'This is the optimized English result',
+          name: '中文输入 -> 英文结果 -> 需翻译回中文'
+        },
+        {
+          original: 'This is the original English input',
+          result: '这是优化后的中文结果',
+          name: '英文输入 -> 中文结果 -> 需翻译回英文'
+        },
+        // 添加更多语言的一致性测试
+        {
+          original: 'Bonjour, ceci est un test en français',
+          result: 'This is the result in English',
+          name: '法语输入 -> 英文结果 -> 需翻译回法语/英文'
+        },
+        {
+          original: 'こんにちは、これは日本語のテストです',
+          result: 'This is a test result in English',
+          name: '日语输入 -> 英文结果 -> 需翻译回日语/英文'
+        }
+      ];
+
+      console.log('\n===== 语言一致性处理测试 =====');
+      
+      const resultsDiv = document.getElementById('consistency-results');
+      resultsDiv.innerHTML = '';
+      
+      for (const testCase of testCases) {
+        console.log(`测试: ${testCase.name}`);
+        console.log(`  原始内容: "${testCase.original}"`);
+        console.log(`  结果内容: "${testCase.result}"`);
+        
+        const caseDiv = document.createElement('div');
+        caseDiv.className = 'test-case';
+        caseDiv.innerHTML = `
+          <div><strong>${testCase.name}</strong></div>
+          <div>原始内容: ${testCase.original}</div>
+          <div>结果内容: ${testCase.result}</div>
+          <div class="result">处理中...</div>
+        `;
+        resultsDiv.appendChild(caseDiv);
+        
+        // 检测语言
+        const originalLang = detectMainLanguage(testCase.original);
+        const resultLang = detectMainLanguage(testCase.result);
+        
+        console.log(`  原始语言: ${originalLang}`);
+        console.log(`  结果语言: ${resultLang}`);
+        
+        if (originalLang !== resultLang) {
+          console.log('  检测到语言不一致，进行翻译...');
+          try {
+            const translatedResult = await translateText(testCase.result, originalLang);
+            console.log(`  翻译后结果: "${translatedResult}"`);
+            
+            // 检测翻译后的语言
+            const translatedLang = detectMainLanguage(translatedResult);
+            const langMatch = translatedLang === originalLang;
+            console.log(`  翻译后语言: ${translatedLang} (${langMatch ? '✅ 匹配原始语言' : '❌ 与原始语言不匹配'})`);
+            
+            // 更新页面
+            const resultDiv = caseDiv.querySelector('.result');
+            resultDiv.innerHTML = `
+              语言不一致，已翻译<br>
+              翻译结果: ${translatedResult}<br>
+              翻译后语言: ${translatedLang} ${langMatch ? '✅' : '❌'}
+            `;
+            resultDiv.className = `result ${langMatch ? 'success' : 'error'}`;
+          } catch (error) {
+            console.error(`  翻译出错: ${error.message}`);
+            
+            // 更新页面
+            const resultDiv = caseDiv.querySelector('.result');
+            resultDiv.innerHTML = `翻译失败: ${error.message}`;
+            resultDiv.className = 'result error';
+          }
+        } else {
+          console.log('  语言一致，无需翻译');
+          
+          // 更新页面
+          const resultDiv = caseDiv.querySelector('.result');
+          resultDiv.innerHTML = '语言一致，无需翻译';
+          resultDiv.className = 'result success';
+        }
+      }
+    }
+
+    // 绑定按钮事件
+    document.getElementById('run-detection-test').addEventListener('click', testLanguageDetection);
+    document.getElementById('run-translation-test').addEventListener('click', testTranslation);
+    document.getElementById('run-consistency-test').addEventListener('click', testLanguageConsistency);
+    
+    // 页面加载完成后，自动运行语言检测测试
+    document.addEventListener('DOMContentLoaded', testLanguageDetection);
+  </script>
+</body>
+</html> 

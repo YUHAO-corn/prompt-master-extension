@@ -1,0 +1,377 @@
+/* Styles for AetherFlow Optimization Popup */
+@import './design-tokens.css';
+
+/* 额外确保关键CSS变量有默认值 */
+:root {
+  --aetherflow-modal-title-color: var(--aetherflow-text-secondary, #334155);
+}
+
+.aetherflow-optimize-popup {
+  position: fixed;
+  z-index: 10002;
+  display: none; /* 初始隐藏，由JS控制 */
+  background-color: var(--aetherflow-bg-card, white);
+  border-radius: var(--aetherflow-radius-lg, 8px);
+  box-shadow: var(--aetherflow-shadow-md, 0 4px 12px rgba(0, 0, 0, 0.1));
+  width: 350px; /* 略微增加宽度 */
+  max-width: 85%;
+  max-height: min(450px, 80vh); /* 稍微扩大最大高度 */
+  border: 1px solid var(--aetherflow-border, #e2e8f0);
+  font-family: var(--aetherflow-font-family, 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif);
+  font-size: var(--aetherflow-font-size-sm, 0.875rem);
+  line-height: 1.5;
+  color: var(--aetherflow-text-primary, #1e293b);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* 确保内容不会溢出圆角 */
+}
+
+.aetherflow-optimize-popup-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: var(--aetherflow-spacing-xs, 0.25rem) var(--aetherflow-spacing-sm, 0.5rem);
+  flex-shrink: 0;
+  cursor: grab;
+  background-color: var(--aetherflow-bg-card, white);
+  border-bottom: 1px solid var(--aetherflow-border, #e2e8f0);
+  color: var(--aetherflow-modal-title-color, #334155);
+}
+
+.aetherflow-optimize-popup-header span {
+  font-weight: var(--aetherflow-font-weight-medium, 500);
+  font-size: var(--aetherflow-font-size-xs, 0.75rem);
+}
+
+.aetherflow-optimize-popup-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.aetherflow-modal-control-button {
+  background: none;
+  border: none;
+  padding: 3px;
+  margin: 0;
+  cursor: pointer;
+  color: var(--aetherflow-gray, #64748b);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+  transition: background-color var(--aetherflow-transition-fast, 0.15s ease), color var(--aetherflow-transition-fast, 0.15s ease);
+}
+
+.aetherflow-modal-control-button:hover {
+  color: var(--aetherflow-dark, #1e293b);
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.aetherflow-modal-control-button svg {
+  width: var(--aetherflow-icon-size-sm, 14px);
+  height: var(--aetherflow-icon-size-sm, 14px);
+  stroke-width: 2.5;
+}
+
+.aetherflow-popup-pin-button svg {
+  stroke-width: 2;
+}
+
+.aetherflow-optimize-popup.aetherflow-popup-pinned .aetherflow-popup-pin-button {
+  background-color: rgba(var(--aetherflow-primary-rgb, 124, 58, 237), 0.15);
+  color: var(--aetherflow-primary, #7c3aed);
+}
+
+.aetherflow-optimize-popup.aetherflow-popup-pinned .aetherflow-popup-pin-button:hover {
+  background-color: rgba(var(--aetherflow-primary-rgb, 124, 58, 237), 0.25);
+}
+
+.aetherflow-popup-close-button {
+  /* Now inherits from aetherflow-modal-control-button */
+}
+
+.aetherflow-popup-close-button svg {
+  /* Inherits size from generic, ensure stroke width is correct */
+  stroke-width: 2.5;
+}
+
+.aetherflow-optimize-popup-content {
+  padding: var(--aetherflow-spacing-md, 0.75rem);
+  flex-grow: 1;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  background-color: var(--aetherflow-bg-card, white);
+  color: var(--aetherflow-text-primary, #1e293b);
+}
+
+/* 等待状态的样式 */
+.aetherflow-optimize-popup-content.optimizing {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: var(--aetherflow-spacing-md, 0.75rem);
+  color: var(--aetherflow-text-muted, #64748b);
+  padding: var(--aetherflow-spacing-lg, 1.5rem);
+}
+
+/* 加载指示器容器 */
+.aetherflow-loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: var(--aetherflow-spacing-md, 0.75rem) 0;
+}
+
+/* 加载阶段指示器 */
+.aetherflow-loading-stages {
+  display: flex;
+  justify-content: center;
+  margin: var(--aetherflow-spacing-md, 0.75rem) 0;
+  width: 100%;
+}
+
+.aetherflow-loading-stage {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin: 0 4px;
+  background-color: #e2e8f0;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.aetherflow-loading-stage.active {
+  background-color: var(--aetherflow-primary);
+  transform: scale(1.2);
+}
+
+/* 加载消息 */
+.aetherflow-loading-message {
+  font-size: var(--aetherflow-font-size-xs, 0.75rem);
+  color: var(--aetherflow-text-secondary);
+  margin-top: var(--aetherflow-spacing-sm, 0.5rem);
+  text-align: center;
+  min-height: 1.5em;
+  animation: fadeText 2s infinite;
+}
+
+/* 骨架屏效果 */
+.aetherflow-loading-skeleton {
+  width: 100%;
+  margin-top: var(--aetherflow-spacing-md, 0.75rem);
+}
+
+.aetherflow-skeleton-line {
+  height: 12px;
+  margin-bottom: 8px;
+  background: linear-gradient(90deg, #f1f5f9 0%, #e2e8f0 50%, #f1f5f9 100%);
+  background-size: 200% 100%;
+  border-radius: var(--aetherflow-radius-sm);
+  animation: shimmer 2s infinite;
+}
+
+.aetherflow-skeleton-line:nth-child(1) { width: 100%; }
+.aetherflow-skeleton-line:nth-child(2) { width: 92%; }
+.aetherflow-skeleton-line:nth-child(3) { width: 96%; }
+.aetherflow-skeleton-line:nth-child(4) { width: 90%; }
+.aetherflow-skeleton-line:nth-child(5) { width: 75%; }
+
+/* 加载指示器 */
+.aetherflow-loading-indicator {
+  border: 2px solid rgba(var(--aetherflow-primary-rgb, 124, 58, 237), 0.2);
+  border-top: 2px solid var(--aetherflow-primary, #7c3aed);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  animation: spin 1s linear infinite;
+  margin-bottom: var(--aetherflow-spacing-sm, 0.5rem);
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeText {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* 添加滚动条样式，与PromptShortcut滚动条一致 */
+.aetherflow-optimize-popup-content::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.aetherflow-optimize-popup-content::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.aetherflow-optimize-popup-content::-webkit-scrollbar-thumb {
+  background-color: rgba(var(--aetherflow-primary-rgb, 124, 58, 237), 0.4);
+  border-radius: 3px;
+}
+
+.aetherflow-optimize-popup-footer {
+  display: flex;
+  justify-content: space-between; /* 更改为两端对齐，以容纳多个按钮 */
+  padding: var(--aetherflow-spacing-xs, 0.25rem) var(--aetherflow-spacing-md, 0.75rem);
+  border-top: 1px solid var(--aetherflow-border, #e2e8f0);
+  flex-shrink: 0;
+  background-color: var(--aetherflow-bg-card, white);
+}
+
+/* 基础按钮样式 */
+.aetherflow-popup-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--aetherflow-spacing-xs, 0.25rem);
+  padding: var(--aetherflow-spacing-xs, 0.25rem) var(--aetherflow-spacing-sm, 0.5rem);
+  border: none;
+  border-radius: var(--aetherflow-radius-md, 6px);
+  cursor: pointer;
+  font-size: var(--aetherflow-font-size-xs, 0.75rem);
+  font-weight: var(--aetherflow-font-weight-medium, 500);
+  transition: var(--aetherflow-transition-fast, 0.15s ease);
+}
+
+/* 主要按钮 (应用到复制按钮) */
+.aetherflow-popup-copy-button {
+  background-color: var(--aetherflow-button-primary-bg, var(--aetherflow-primary, #7c3aed));
+  color: var(--aetherflow-button-primary-text, white);
+}
+
+.aetherflow-popup-copy-button:hover {
+  background-color: var(--aetherflow-button-primary-hover, var(--aetherflow-primary-dark, #6d28d9));
+  box-shadow: 0 2px 4px rgba(var(--aetherflow-primary-rgb, 124, 58, 237), 0.25);
+  transform: translateY(-1px);
+}
+
+.aetherflow-popup-copy-button svg {
+  width: var(--aetherflow-icon-size-sm, 14px);
+  height: var(--aetherflow-icon-size-sm, 14px);
+  stroke-width: var(--aetherflow-icon-stroke-width, 2);
+  stroke: white;
+}
+
+/* 次要按钮 (应用到重新优化按钮) */
+.aetherflow-popup-reoptimize-button {
+  background-color: var(--aetherflow-button-secondary-bg, transparent);
+  color: var(--aetherflow-button-secondary-text, var(--aetherflow-primary, #7c3aed));
+  border: 1px solid var(--aetherflow-button-secondary-border, var(--aetherflow-primary-light, #a78bfa));
+}
+
+.aetherflow-popup-reoptimize-button:hover {
+  background-color: var(--aetherflow-button-secondary-hover, rgba(var(--aetherflow-primary-rgb, 124, 58, 237), 0.08));
+  box-shadow: 0 2px 4px rgba(var(--aetherflow-primary-rgb, 124, 58, 237), 0.15);
+  transform: translateY(-1px);
+}
+
+.aetherflow-popup-reoptimize-button svg {
+  width: var(--aetherflow-icon-size-sm, 14px);
+  height: var(--aetherflow-icon-size-sm, 14px);
+  stroke-width: var(--aetherflow-icon-stroke-width, 2);
+  stroke: currentColor;
+}
+
+/* 按钮禁用状态 */
+.aetherflow-popup-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* 视图切换控件 */
+.aetherflow-view-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 8px 0;
+  padding: 0 8px;
+}
+
+.aetherflow-view-toggle-label {
+  font-size: var(--aetherflow-font-size-xs, 0.75rem);
+  color: var(--aetherflow-text-secondary, #334155);
+}
+
+.aetherflow-view-toggle-buttons {
+  display: flex;
+  background-color: var(--aetherflow-bg-card-hover, #f1f5f9);
+  border-radius: var(--aetherflow-radius-full, 9999px);
+  padding: 2px;
+}
+
+.aetherflow-view-toggle-button {
+  font-size: var(--aetherflow-font-size-xs, 0.75rem);
+  border: none;
+  background: none;
+  padding: 3px 8px;
+  border-radius: var(--aetherflow-radius-full, 9999px);
+  cursor: pointer;
+  color: var(--aetherflow-text-secondary, #334155);
+  transition: all var(--aetherflow-transition-fast, 0.15s ease);
+}
+
+.aetherflow-view-toggle-button.active {
+  background-color: white;
+  color: var(--aetherflow-primary, #7c3aed);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* 优化内容显示模式 */
+.aetherflow-optimize-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* 对比视图 */
+.aetherflow-optimize-content-wrapper.split-view {
+  flex-direction: row;
+  gap: 8px;
+  height: 100%;
+}
+
+.aetherflow-optimize-original,
+.aetherflow-optimize-result {
+  padding: 12px;
+  border-radius: var(--aetherflow-radius-md, 6px);
+  flex: 1;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-size: 0.9em;
+  line-height: 1.5;
+}
+
+.aetherflow-optimize-original {
+  background-color: #f1f5f9;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+}
+
+.aetherflow-optimize-result {
+  background-color: #f9fafb;
+  border: 1px solid rgba(var(--aetherflow-primary-rgb, 124, 58, 237), 0.2);
+}
+
+/* 单一视图下，隐藏原文 */
+.aetherflow-optimize-content-wrapper:not(.split-view) .aetherflow-optimize-original {
+  display: none;
+}
+
+/* 单一视图下，结果占满整个空间 */
+.aetherflow-optimize-content-wrapper:not(.split-view) .aetherflow-optimize-result {
+  flex: 1;
+} 

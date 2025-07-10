@@ -1,0 +1,40 @@
+/* Styles for AetherFlow Toast Notification */
+@import './design-tokens.css';
+
+.aetherflow-toast-notification {
+  position: fixed;
+  bottom: var(--aetherflow-spacing-lg);
+  right: var(--aetherflow-spacing-lg);
+  padding: var(--aetherflow-spacing-sm) var(--aetherflow-spacing-base);
+  border-radius: var(--aetherflow-radius-md);
+  z-index: 2147483647; /* 确保在最上层 */
+  font-size: var(--aetherflow-font-size-sm);
+  font-weight: var(--aetherflow-font-weight-medium);
+  box-shadow: var(--aetherflow-shadow-md);
+  transition: opacity var(--aetherflow-transition-normal), transform var(--aetherflow-transition-normal);
+  opacity: 0;
+  transform: translateY(20px); /* 从下方开始出现 */
+  font-family: var(--aetherflow-font-family);
+  max-width: 300px; /* 防止提示过宽 */
+  text-align: left;
+  line-height: 1.4;
+}
+
+.aetherflow-toast-notification.success {
+  background-color: #4CAF50; /* 保留绿色成功提示 */
+  color: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.aetherflow-toast-notification.error {
+  background-color: #F44336; /* 保留红色错误提示 */
+  color: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* 新增：通用品牌提示 */
+.aetherflow-toast-notification.info {
+  background-color: var(--aetherflow-primary);
+  color: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+} 

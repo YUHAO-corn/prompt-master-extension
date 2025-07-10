@@ -1,0 +1,111 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  # Extension Tests and Build
+  extension:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: extension/package-lock.json
+    
+    - name: Install Extension Dependencies
+      working-directory: ./extension
+      run: npm ci
+    
+    - name: Run Extension Linting
+      working-directory: ./extension
+      run: npm run lint
+    
+    - name: Run Extension Tests
+      working-directory: ./extension
+      run: npm run test:coverage
+    
+    - name: Build Extension
+      working-directory: ./extension
+      run: npm run build
+    
+    - name: Upload Extension Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: extension-build
+        path: extension/build/
+
+  # Backend Tests and Build
+  backend:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: backend/package-lock.json
+    
+    - name: Install Backend Dependencies
+      working-directory: ./backend
+      run: npm ci
+    
+    - name: Run Backend Linting
+      working-directory: ./backend
+      run: npm run lint
+    
+    - name: Run Backend Tests
+      working-directory: ./backend
+      run: npm run test:coverage
+    
+    - name: Build Backend
+      working-directory: ./backend
+      run: npm run build
+
+  # Security Audit
+  security:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Run Security Audit - Extension
+      working-directory: ./extension
+      run: npm audit --audit-level=high
+    
+    - name: Run Security Audit - Backend
+      working-directory: ./backend
+      run: npm audit --audit-level=high
+
+  # Code Quality
+  code-quality:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+    
+    - name: Check Extension Code Style
+      working-directory: ./extension
+      run: |
+        npm ci
+        npm run format -- --check
+    
+    - name: TypeScript Check - Extension
+      working-directory: ./extension
+      run: npm run type-check 

@@ -1,0 +1,449 @@
+/* Styles for AetherFlow Preview Modal */
+
+.aetherflow-capture-modal {
+  /* 定位样式 */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10001;
+  display: none; /* JS控制 */
+  max-height: 85vh;
+
+  /* 外观样式 */
+  font-family: var(--aetherflow-font-family);
+  background-color: white;
+  color: var(--aetherflow-dark);
+  border-radius: var(--aetherflow-radius-lg);
+  box-shadow: var(--aetherflow-shadow-md);
+  width: 350px; /* 调整为与优化窗口相同的宽度 */
+  max-width: 90%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.aetherflow-capture-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px; /* 减小内边距 */
+  border-bottom: 1px solid var(--aetherflow-border);
+  cursor: grab;
+}
+
+.aetherflow-capture-modal-title {
+  font-size: 14px; /* 减小字体 */
+  font-weight: var(--aetherflow-font-weight-bold);
+  color: var(--aetherflow-dark);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.aetherflow-capture-modal-controls {
+    display: flex;
+    align-items: center;
+    gap: 4px; /* 减小间距 */
+}
+
+/* Control buttons (Pin/Close) - Ensure they look good on white bg */
+.aetherflow-modal-control-button {
+  color: var(--aetherflow-control-icon-color, #6c757d);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 3px; /* 减小内边距 */
+  line-height: 0;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.aetherflow-modal-control-button:hover {
+  color: var(--aetherflow-control-icon-hover-color, #343a40);
+  background-color: var(--aetherflow-control-icon-hover-bg, #e9ecef);
+}
+
+.aetherflow-modal-control-button svg {
+   width: 14px; /* 减小图标尺寸 */
+   height: 14px;
+   stroke-width: 2;
+}
+
+.aetherflow-capture-pin-button.active {
+    color: var(--aetherflow-purple-accent, #4a2f9c); 
+    background-color: rgba(var(--aetherflow-purple-accent-rgb, 74, 47, 156), 0.1);
+}
+.aetherflow-capture-pin-button.active svg {
+    fill: var(--aetherflow-purple-accent, #4a2f9c); 
+}
+
+.aetherflow-capture-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* 减小间距 */
+  padding: 12px 10px; /* 减小内边距 */
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.aetherflow-capture-modal label {
+  font-weight: 500;
+  font-size: 12px; /* 减小字体 */
+  color: #495057;
+  margin-bottom: 4px; /* 减小间距 */
+  display: block;
+}
+
+/* 保存按钮样式 */
+.aetherflow-capture-modal-save-button {
+  padding: 6px 12px; /* 增加内边距 */
+  background-color: var(--aetherflow-primary);
+  color: white;
+  border: none;
+  border-radius: var(--aetherflow-radius-md);
+  cursor: pointer;
+  font-size: 12px; /* 增加字体 */
+  font-weight: var(--aetherflow-font-weight-medium);
+  transition: all var(--aetherflow-transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px; /* 增加间距 */
+  line-height: 1;
+  box-shadow: 0 1px 3px rgba(var(--aetherflow-primary-rgb), 0.3); /* 添加阴影增强按钮立体感 */
+}
+
+.aetherflow-capture-modal-save-button:hover {
+  background-color: var(--aetherflow-primary-dark);
+  box-shadow: 0 3px 6px rgba(var(--aetherflow-primary-rgb), 0.4);
+  transform: translateY(-1px); /* 悬浮时微微上移 */
+}
+
+.aetherflow-capture-modal-save-button:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(var(--aetherflow-primary-rgb), 0.3);
+}
+
+/* 保存按钮加载状态 */
+.aetherflow-capture-modal-save-button.aetherflow-button-loading {
+  opacity: 0.8;
+  cursor: wait;
+}
+
+.aetherflow-capture-modal-save-button.aetherflow-button-loading::after {
+  content: '';
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s linear infinite;
+  margin-left: 4px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 输入框和文本区域样式 */
+.aetherflow-capture-modal input[type="text"],
+.aetherflow-capture-modal textarea {
+  width: 100%;
+  padding: 7px 10px; /* 减小内边距 */
+  border: 1px solid var(--aetherflow-input-border);
+  border-radius: var(--aetherflow-radius-md);
+  font-size: 12px; /* 减小字体 */
+  box-sizing: border-box;
+  background-color: var(--aetherflow-input-bg);
+  color: var(--aetherflow-dark);
+  transition: border-color var(--aetherflow-transition-fast), box-shadow var(--aetherflow-transition-fast);
+  font-family: var(--aetherflow-font-family, -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", "微软雅黑", sans-serif);
+}
+
+/* 特别针对文本区域的调整 */
+.aetherflow-capture-modal textarea {
+  white-space: pre-wrap;       /* 保留空格但允许换行 */
+  word-wrap: break-word;       /* 允许长单词断行 */
+  overflow-wrap: break-word;   /* 现代浏览器的断行属性 */
+  overflow-x: hidden;          /* 隐藏水平滚动条 */
+  min-height: 120px;           /* 减小文本区域高度 */
+  line-height: 1.6;            /* 增加行高提高可读性 */
+  resize: vertical;            /* 只允许垂直方向调整大小 */
+  background-color: #f9fafb;   /* 轻微的背景色增加对比度 */
+  padding: 12px;               /* 增加内边距提高可读性 */
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05); /* 内阴影增强深度感 */
+}
+
+.aetherflow-capture-modal input[type="text"]:focus,
+.aetherflow-capture-modal textarea:focus {
+  border-color: var(--aetherflow-primary);
+  box-shadow: 0 0 0 2px rgba(var(--aetherflow-primary-rgb), 0.25), inset 0 1px 2px rgba(0, 0, 0, 0.05);
+  outline: none;
+}
+
+.aetherflow-capture-modal input[type="text"]::placeholder {
+    color: #adb5bd;
+    font-size: 12px; /* 减小字体 */
+}
+
+.aetherflow-capture-modal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px; /* 增加内边距 */
+  border-top: 1px solid var(--aetherflow-border-color, #dee2e6);
+  background-color: var(--aetherflow-bg-card, white); /* 与优化窗口一致 */
+  gap: 8px; /* 增加按钮间距 */
+}
+
+/* 优化链接样式 */
+.aetherflow-capture-optimize-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px; /* 减小间距 */
+  padding: 5px 8px; /* 增加内边距 */
+  border: none;
+  background: rgba(var(--aetherflow-primary-rgb), 0.04); /* 轻微背景 */
+  color: var(--aetherflow-primary);
+  font-size: 12px; /* 减小字体 */
+  font-weight: var(--aetherflow-font-weight-medium);
+  cursor: pointer;
+  border-radius: var(--aetherflow-radius-sm);
+  transition: background-color var(--aetherflow-transition-fast), color var(--aetherflow-transition-fast), transform var(--aetherflow-transition-fast);
+  margin-right: auto;
+}
+
+.aetherflow-capture-optimize-link:hover {
+  color: var(--aetherflow-primary-dark);
+  background-color: rgba(var(--aetherflow-primary-rgb), 0.1);
+  transform: translateY(-1px);
+}
+
+.aetherflow-capture-optimize-link:active {
+  transform: translateY(0);
+}
+
+.aetherflow-capture-optimize-link svg {
+    width: 14px; /* 略微增加图标尺寸 */
+    height: 14px;
+    fill: currentColor;
+    stroke: none;
+}
+
+/* 新增：针对优化图标的专用样式 */
+.optimize-icon {
+    fill: currentColor !important;
+    stroke: none !important;
+}
+
+/* Style adjustments for loading state on the new structure */
+.aetherflow-capture-modal.aetherflow-modal-loading .aetherflow-capture-modal-body textarea {
+    opacity: 0.6;
+    pointer-events: none; 
+}
+
+.aetherflow-capture-modal.aetherflow-modal-loading .aetherflow-capture-optimize-link {
+    opacity: 0.6;
+    cursor: default;
+    pointer-events: none;
+}
+
+.aetherflow-capture-modal.aetherflow-modal-loading .aetherflow-capture-optimize-link::after {
+    content: '⏳';
+    display: inline-block;
+    margin-left: 4px; /* 减小间距 */
+    font-size: 11px; /* 减小字体 */
+}
+
+/* Container for Title input and spinner */
+.aetherflow-capture-title-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.aetherflow-capture-modal .aetherflow-capture-title-area input[type="text"] {
+    padding-right: 25px; /* 减小内边距 */
+}
+
+/* Spinner placeholder style */
+.aetherflow-capture-title-spinner {
+    display: none;
+    position: absolute;
+    right: 8px; /* 调整位置 */
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px; /* 减小字体 */
+    color: #adb5bd;
+}
+
+/* Style when spinner is active/visible */
+.aetherflow-capture-title-spinner.visible {
+    display: inline-block;
+}
+
+/* 添加创建时间和来源信息样式 - Obsidian风格 */
+.aetherflow-capture-metadata {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 11px; /* 小字体 */
+    color: #6c757d; /* 中灰色 */
+    background-color: #f8fafc; /* 轻微的背景色 */
+    border: 1px solid #e2e8f0; /* 细边框 */
+    border-radius: var(--aetherflow-radius-md);
+    padding: 8px 10px;
+    margin: 8px 0 16px 0; /* 增加与内容区的间距 */
+}
+
+.aetherflow-capture-metadata-row {
+    display: flex;
+    align-items: center;
+}
+
+.aetherflow-capture-metadata-label {
+    flex: 0 0 70px; /* 固定宽度 */
+    font-weight: 500;
+    color: #495057; /* 深灰色 */
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* 添加图标前缀 */
+.aetherflow-capture-metadata-row:first-child .aetherflow-capture-metadata-label::before {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23495057' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'%3E%3C/circle%3E%3Cpath d='M12 6v6l4 2'%3E%3C/path%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.6;
+}
+
+.aetherflow-capture-metadata-row:last-child .aetherflow-capture-metadata-label::before {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23495057' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71'%3E%3C/path%3E%3Cpath d='M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71'%3E%3C/path%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.6;
+}
+
+.aetherflow-capture-metadata-value {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 来源链接样式 */
+.aetherflow-capture-source-link {
+    color: var(--aetherflow-primary);
+    text-decoration: none;
+    transition: color var(--aetherflow-transition-fast);
+}
+
+.aetherflow-capture-source-link:hover {
+    text-decoration: underline;
+    color: var(--aetherflow-primary-dark);
+}
+
+/* Add styles for future elements like tags, metadata, optimize button */
+/* .aetherflow-capture-modal .tags-input { ... } */
+/* .aetherflow-capture-modal .metadata-display { ... } */
+/* .aetherflow-capture-modal .optimize-button { ... } */
+
+/* Add styles for the new Optimize text link in the footer */
+.aetherflow-capture-optimize-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px; /* Minimal padding for link feel */
+    border: none;
+    background: none;
+    /* Use purple accent */
+    color: var(--aetherflow-purple-accent, #4a2f9c);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.15s ease, color 0.15s ease;
+    margin-right: auto; /* Pushes save button to the right */
+}
+
+.aetherflow-capture-optimize-link:hover {
+    /* Slightly darker accent or subtle background */
+    /* Use purple accent hover */
+    color: var(--aetherflow-purple-accent-hover, #3b257a);
+    background-color: rgba(var(--aetherflow-purple-accent-rgb, 74, 47, 156), 0.1);
+}
+
+.aetherflow-capture-optimize-link svg {
+    width: 14px;
+    height: 14px;
+    stroke-width: 2;
+}
+
+/* Style adjustments for loading state on the new structure */
+.aetherflow-capture-modal.aetherflow-modal-loading .aetherflow-capture-modal-body textarea {
+    opacity: 0.6;
+    pointer-events: none; 
+}
+
+.aetherflow-capture-modal.aetherflow-modal-loading .aetherflow-capture-optimize-link {
+    opacity: 0.6;
+    cursor: default;
+    pointer-events: none;
+}
+
+.aetherflow-capture-modal.aetherflow-modal-loading .aetherflow-capture-optimize-link::after {
+    content: '⏳';
+    display: inline-block;
+    margin-left: 6px;
+    font-size: 12px;
+    /* Optional: add animation */
+    /* animation: spin 1s linear infinite; */
+}
+
+/* Remove the following line completely if it exists */
+/* </rewritten_file> */
+
+/* 增加滚动提示阴影 */
+.aetherflow-capture-content-area {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.aetherflow-capture-content-area::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 20px;
+  background: linear-gradient(transparent, rgba(249, 250, 251, 0.9));
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 1;
+  border-radius: 0 0 var(--aetherflow-radius-md) var(--aetherflow-radius-md);
+}
+
+.aetherflow-capture-content-area.scrollable::after {
+  opacity: 1;
+}
+
+.aetherflow-capture-modal textarea:focus {
+  border-color: var(--aetherflow-primary);
+  box-shadow: 0 0 0 2px rgba(var(--aetherflow-primary-rgb), 0.25), inset 0 1px 2px rgba(0, 0, 0, 0.05);
+  outline: none;
+} 

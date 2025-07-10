@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+    env_file:
+      - .env.local
+    volumes:
+      - ./backend/src:/app/src
+      - ./backend/config:/app/config
+    depends_on:
+      - redis
+    networks:
+      - prompt-master-network
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - prompt-master-network
+
+  # Optional: Add nginx for reverse proxy in production
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/nginx/ssl
+    depends_on:
+      - backend
+    networks:
+      - prompt-master-network
+    profiles:
+      - production
+
+volumes:
+  redis_data:
+
+networks:
+  prompt-master-network:
+    driver: bridge 
