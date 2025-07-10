@@ -39,7 +39,7 @@ If applicable, add screenshots to help explain your problem.
 
 **Extension Information:**
 - Extension Version: [e.g. 1.0.0]
-- Installation Method: [Chrome Web Store / Manual Installation]
+- Installation Method: [Manual Installation from Source]
 
 **AI Platform:**
 - Platform: [e.g. ChatGPT, Claude, Gemini]
@@ -62,4 +62,4 @@ If applicable, paste any console errors here:
 - [ ] I have searched existing issues to ensure this bug hasn't been reported
 - [ ] I have provided all the required information above
 - [ ] I can reproduce this bug consistently
-- [ ] This bug is related to the Prompt Master Extension functionality 
+- [ ] This bug is related to the Aetherflow extension functionality

@@ -213,4 +213,4 @@ Contributors will be:
 - [React Documentation](https://react.dev/)
 - [TypeScript Handbook](https://www.typescriptlang.org/docs/)
 
-Thank you for contributing to Prompt Master Extension! 🚀
+Thank you for contributing to Prompt Master Extension! 🚀 

@@ -1,16 +1,84 @@
-# 🌊 Prompt Master Extension
+# 🌊 Aetherflow - AI Prompt Management Extension
 
-> **Your Prompts, All In One Place. Everywhere.**  
-> **让您的提示词，随处可见，随时可用**
+<div align="center">
 
-**English | [中文](README.md)**
+**🚀 Your Prompts, All In One Place. Everywhere.**
+
+*让您的提示词，随处可见，随时可用*
+
+[![🌐 Website](https://img.shields.io/badge/🌐%20Website-aetherflow--app.com-FF6B6B?style=for-the-badge)](https://aetherflow-app.com/)
+[![📺 Demo Video](https://img.shields.io/badge/📺%20Demo%20Video-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/watch?v=rIrv8omQpvM)
+[![📖 中文](https://img.shields.io/badge/📖%20中文-README-4FC3F7?style=for-the-badge)](README.md)
+
+---
+
+### 💫 One-Click Access • 50+ AI Platforms • Coming to Chrome Store
+
+</div>
+
+## 🎬 Product Demo
+
+<div align="center">
+
+![Aetherflow Demo](docs/images/demo.gif)
+
+*Press "/" on any AI platform to instantly access your prompt library*
+
+</div>
+
+## ✨ Core Features
+
+<table>
+<tr>
+<td width="50%">
+
+### 🚀 **Quick Input System**
+- **One-Click Trigger**: Press `/` anywhere for instant access
+- **Lightning Fast**: Local cache, <200ms response time  
+- **Universal Compatibility**: ChatGPT, Claude, Gemini + 50 platforms
+
+### 🧠 **AI-Powered Optimization**
+- **Smart Analysis**: GPT-4 driven prompt quality analysis
+- **Multi-Strategy**: Professional, creative, concise optimization
+- **Performance Tracking**: Usage stats and effectiveness comparison
+
+</td>
+<td width="50%">
+
+### 📚 **Smart Management System**
+- **Cloud Sync**: Real-time sync across devices, secure data
+- **Smart Organization**: AI-powered auto-categorization and tagging
+- **Import/Export**: Bulk operations and data migration support
+
+### 💎 **Project Status**
+- **1,600+** Website visitors
+- **Coming Soon** to Chrome Store (under review)
+- **Open Source** complete technical implementation
+
+</td>
+</tr>
+</table>
+
+## 🎯 Project Showcase
+
+**🎬 [Latest Demo](https://www.youtube.com/watch?v=rIrv8omQpvM)** - 3-minute complete feature overview
+
+**📺 [Technical Deep Dive](https://www.youtube.com/watch?v=vSwZ517-0Wg)** - In-depth technical sharing
+
+**🌐 [Product Landing Page](https://aetherflow-app.com/)** - Complete project introduction
+
+---
 
 A powerful Chrome extension for AI prompt management that helps you save, organize, and optimize your prompts across all AI platforms.
 
+<div align="center">
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Chrome Web Store](https://img.shields.io/badge/Chrome-Extension-green.svg)](https://chrome.google.com/webstore)
+[![Chrome Extension](https://img.shields.io/badge/Chrome-Extension-green.svg)](https://developer.chrome.com/docs/extensions/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)](https://reactjs.org/)
+
+</div>
 
 ## ✨ Features
 
@@ -43,8 +111,8 @@ A powerful Chrome extension for AI prompt management that helps you save, organi
 
 1. **Install the Extension**
    ```bash
-   # Download from Chrome Web Store (coming soon)
-   # Or build from source (see Development section)
+   # Chrome Store version coming soon (under review)
+   # Currently available via source build (see Development section)
    ```
 
 2. **First-Time Setup**

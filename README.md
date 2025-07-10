@@ -1,16 +1,84 @@
-# 🌊 Prompt Master Extension
+# 🌊 Aetherflow - AI提示词管理扩展
 
-> **Your Prompts, All In One Place. Everywhere.**  
-> **让您的提示词，随处可见，随时可用**
+<div align="center">
 
-**[English](README_EN.md) | 中文**
+**🚀 让您的提示词，随处可见，随时可用**
+
+*Your Prompts, All In One Place. Everywhere.*
+
+[![🌐 产品官网](https://img.shields.io/badge/🌐%20产品官网-aetherflow--app.com-FF6B6B?style=for-the-badge)](https://aetherflow-app.com/)
+[![📺 产品演示](https://img.shields.io/badge/📺%20产品演示-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/watch?v=rIrv8omQpvM)
+[![📖 English](https://img.shields.io/badge/📖%20English-README-4FC3F7?style=for-the-badge)](README_EN.md)
+
+---
+
+### 💫 一键调用，50+AI平台通用，即将登陆Chrome商店
+
+</div>
+
+## 🎬 产品演示
+
+<div align="center">
+
+![Aetherflow Demo](docs/images/demo.gif)
+
+*在任意AI平台按 "/" 键，即可快速访问您的提示词库*
+
+</div>
+
+## ✨ 核心特性
+
+<table>
+<tr>
+<td width="50%">
+
+### 🚀 **快捷输入系统**
+- **一键触发**：任意网页按 `/` 立即调用
+- **毫秒响应**：本地缓存，响应时间 < 200ms  
+- **全平台兼容**：ChatGPT、Claude、Gemini等50+平台
+
+### 🧠 **AI驱动优化**
+- **智能分析**：GPT-4驱动的提示词质量分析
+- **多策略优化**：专业性、创意性、简洁性等方向
+- **效果跟踪**：使用统计和效果对比
+
+</td>
+<td width="50%">
+
+### 📚 **智能管理系统**
+- **云端同步**：多设备实时同步，数据安全
+- **智能分类**：AI自动分类和标签管理
+- **导入导出**：支持批量操作和数据迁移
+
+### 💎 **项目现状**
+- **1,600+** 官网访问用户
+- **即将上线** Chrome商店（审核中）
+- **开源分享** 完整技术实现
+
+</td>
+</tr>
+</table>
+
+## 🎯 项目展示
+
+**🎬 [最新产品演示](https://www.youtube.com/watch?v=rIrv8omQpvM)** - 3分钟完整功能展示
+
+**📺 [技术实现解析](https://www.youtube.com/watch?v=vSwZ517-0Wg)** - 深度技术分享
+
+**🌐 [产品落地页](https://aetherflow-app.com/)** - 完整项目介绍
+
+---
 
 一款专为 AI 重度用户设计的 Chrome 浏览器扩展，致力于解决提示词管理效率低下的核心痛点。通过提供提示词快捷输入、智能库管理和 AI 驱动优化功能，打造完整的提示词生命周期管理生态系统。
 
+<div align="center">
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Chrome Web Store](https://img.shields.io/badge/Chrome-Extension-green.svg)](https://chrome.google.com/webstore)
+[![Chrome Extension](https://img.shields.io/badge/Chrome-Extension-green.svg)](https://developer.chrome.com/docs/extensions/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)](https://reactjs.org/)
+
+</div>
 
 ---
 
@@ -320,8 +388,8 @@ sequenceDiagram
 
 1. **安装扩展**
    ```bash
-   # 从Chrome Web Store安装 (即将上线)
-   # 或从源码构建 (见下方开发指南)
+   # Chrome商店版本即将上线 (审核中)
+   # 当前可通过源码构建体验 (见下方开发指南)
    ```
 
 2. **首次设置**
