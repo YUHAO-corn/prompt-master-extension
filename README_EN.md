@@ -96,20 +96,198 @@ A powerful Chrome extension for AI prompt management that helps you save, organi
 
 ## 🏗️ Architecture
 
-### System Overview
+### System Architecture Overview
+
+Our modern distributed architecture ensures high availability, scalability, and excellent user experience:
+
+```mermaid
+graph TB
+    subgraph "User Environment"
+        User["👤 User"]
+        Browser["🌐 Browser"]
+        AI_Sites["🤖 AI Platforms<br/>(ChatGPT, Claude, Gemini)"]
+    end
+
+    subgraph "Prompt Master Chrome Extension"
+        Content["📄 Content Script<br/>- Shortcut detection<br/>- DOM manipulation<br/>- Prompt insertion"]
+        Sidepanel["📱 Side Panel<br/>- Prompt library<br/>- Optimization UI<br/>- User interface"]
+        Background["⚙️ Background Script<br/>- State management<br/>- Message routing<br/>- Data sync"]
+        LocalStorage["💾 Chrome Storage<br/>- Local cache<br/>- Offline support"]
+    end
+
+    subgraph "Backend Services"
+        NodeJS["🚀 Node.js + Express<br/>- API proxy<br/>- Authentication"]
+        Firebase["🔥 Firebase<br/>- User auth<br/>- Data storage"]
+        AI_API["🧠 AI Optimization API<br/>- Prompt enhancement<br/>- Content analysis"]
+        Paddle["💳 Paddle<br/>- Payment processing<br/>- Subscription management"]
+    end
+
+    %% User interactions
+    User -->|uses| Browser
+    Browser -->|visits| AI_Sites
+    User -->|installs| Content
+    User -->|manages| Sidepanel
+
+    %% Extension internal communication
+    Content <-->|messaging| Background
+    Sidepanel <-->|messaging| Background
+    Background <-->|data ops| LocalStorage
+
+    %% Extension to backend communication
+    Background <-->|API calls| NodeJS
+    Sidepanel -->|payment flow| Paddle
+
+    %% Backend service connections
+    NodeJS <-->|authentication| Firebase
+    NodeJS <-->|data storage| Firebase
+    NodeJS <-->|AI services| AI_API
+
+    %% Data synchronization
+    Firebase -.->|real-time sync| Background
 ```
-┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   Chrome        │    │   Backend API    │    │   Firebase      │
-│   Extension     │◄──►│   (Node.js)      │◄──►│   (Auth + DB)   │
-│                 │    │                  │    │                 │
-└─────────────────┘    └──────────────────┘    └─────────────────┘
-         │                       │                       │
-         ▼                       ▼                       ▼
-┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│  AI Platforms   │    │  Prompt Engine   │    │  User Data      │
-│  (ChatGPT, etc) │    │  (Optimization)  │    │  (Prompts, etc) │
-└─────────────────┘    └──────────────────┘    └─────────────────┘
+
+### Frontend Component Architecture
+
+```mermaid
+graph TB
+    subgraph "UI Layer"
+        App["📱 App.tsx<br/>Main application entry"]
+        LibraryTab["📚 LibraryTab<br/>Prompt library interface"]
+        OptimizerTab["🎯 OptimizerTab<br/>Optimization interface"]
+        MembershipCenter["⭐ MembershipCenter<br/>Membership management"]
+        QuickCommand["⚡ QuickCommand<br/>Quick input component"]
+    end
+
+    subgraph "Business Logic Layer"
+        usePromptsData["🪝 usePromptsData<br/>Prompt data management"]
+        useAuth["🔐 useAuth<br/>Authentication state"]
+        useMembership["💎 useMembership<br/>Membership management"]
+        useQuota["📊 useQuota<br/>Usage quota tracking"]
+        useOptimize["🎯 useOptimize<br/>Optimization features"]
+    end
+
+    subgraph "Service Layer"
+        StorageService["💾 StorageService<br/>Data storage abstraction"]
+        AuthService["🔐 AuthService<br/>Authentication service"]
+        OptimizationService["🧠 OptimizationService<br/>AI optimization"]
+        MessagingService["📨 MessagingService<br/>Cross-component messaging"]
+    end
+
+    subgraph "Data Layer"
+        ChromeStorage["🗄️ ChromeStorage<br/>Local storage implementation"]
+        CloudStorage["☁️ CloudStorage<br/>Cloud sync implementation"]
+        FirestoreListener["🔥 FirestoreListener<br/>Real-time data listener"]
+    end
+
+    %% Component relationships
+    App --> LibraryTab
+    App --> OptimizerTab
+    App --> MembershipCenter
+    LibraryTab --> usePromptsData
+    OptimizerTab --> useOptimize
+    MembershipCenter --> useMembership
+    usePromptsData --> StorageService
+    useAuth --> AuthService
+    useOptimize --> OptimizationService
+    StorageService --> ChromeStorage
+    StorageService --> CloudStorage
+    CloudStorage --> FirestoreListener
 ```
+
+### Core Business Flow Sequence
+
+This sequence diagram demonstrates the complete user journey from trigger to optimization, showcasing our modular design and data flow architecture:
+
+```mermaid
+sequenceDiagram
+    participant U as 👤 User
+    participant CS as 📄 Content Script
+    participant BG as ⚙️ Background
+    participant SP as 📱 Side Panel
+    participant LS as 💾 Local Storage
+    participant FS as 🔥 Firestore
+    participant API as 🧠 Optimization API
+    participant UI as 🎨 Quick Command UI
+
+    Note over U, UI: Scenario: User using quick input on ChatGPT
+
+    %% Phase 1: Trigger Detection
+    U->>CS: Types "/" in input field
+    CS->>CS: Detects trigger character
+    CS->>BG: Sends trigger event
+    Note right of CS: Real-time DOM monitoring<br/>Non-invasive detection
+
+    %% Phase 2: Data Retrieval
+    BG->>LS: Read local prompt cache
+    LS-->>BG: Return cached data
+    
+    alt Cache hit
+        BG->>UI: Display quick selector
+    else Cache miss or stale
+        BG->>FS: Request cloud data sync
+        FS-->>BG: Return latest prompt library
+        BG->>LS: Update local cache
+        BG->>UI: Display quick selector
+    end
+
+    Note over BG, FS: Smart caching strategy<br/>Offline-first, cloud-synced
+
+    %% Phase 3: User Interaction
+    UI->>U: Show prompt list
+    U->>UI: Search/select prompt
+    UI->>BG: Send user selection
+    
+    %% Phase 4: Data Processing
+    BG->>LS: Update usage statistics
+    BG->>CS: Send insertion command
+    CS->>CS: Replace input content
+    CS->>U: Prompt insertion complete
+
+    Note over CS, U: Seamless replacement<br/>Maintains cursor position
+
+    %% Phase 5: AI Optimization Flow (Optional)
+    alt User chooses optimization
+        U->>SP: Open optimization panel
+        SP->>BG: Request optimization service
+        BG->>API: Call AI optimization endpoint
+        
+        Note over API: GPT-4 powered<br/>Multi-strategy optimization
+        
+        API-->>BG: Return optimization suggestions
+        BG->>SP: Display optimization results
+        SP->>U: Show comparison and options
+        
+        opt User confirms optimization
+            U->>SP: Confirm optimized version
+            SP->>BG: Save optimization result
+            BG->>LS: Update local data
+            BG->>FS: Sync to cloud
+        end
+    end
+
+    %% Phase 6: Data Synchronization
+    BG->>FS: Async upload usage data
+    Note right of FS: User behavior analytics<br/>Personalization data
+
+    Note over U, UI: Complete cycle: Trigger → Retrieve → Select → Insert → Optimize → Sync
+```
+
+**Architecture Highlights:**
+
+🎯 **Product Excellence**
+- **User-Centric Design**: <200ms response time, offline-first strategy
+- **Complete Business Loop**: End-to-end data flow from trigger to sync
+- **Robust Error Handling**: Cache fallback, network fault tolerance
+
+🏗️ **Technical Architecture**
+- **Modular Decoupling**: Clear component responsibilities, standardized interfaces  
+- **Data Flow Control**: Local cache + cloud sync dual protection
+- **Performance Optimization**: Smart caching, async processing, batch sync
+
+💼 **Business Value**
+- **Usage Analytics**: Data collection for product iteration
+- **Personalization Foundation**: User behavior analysis for smart recommendations
+- **Monetization Design**: Optimization features as Pro version differentiator
 
 ### Technical Stack
 

@@ -26,7 +26,7 @@
 ### 解决方案设计
 Prompt Master Extension 通过"保存→管理→优化→使用"的完整闭环，为用户提供：
 
-**🚀 即时访问** - 任意网页按 \`/\` 快速调用提示词库  
+**🚀 即时访问** - 任意网页按 `/` 快速调用提示词库  
 **📚 智能管理** - 云端同步的分类标签系统  
 **🤖 AI优化** - 基于大语言模型的提示词质量提升  
 **🌐 全平台兼容** - 支持ChatGPT、Claude、Gemini等50+平台
@@ -36,7 +36,7 @@ Prompt Master Extension 通过"保存→管理→优化→使用"的完整闭环
 ## ✨ 产品功能特性
 
 ### 🚀 快捷输入系统
-- **一键触发**：在任何输入框输入 \`/\` 即可调用提示词库
+- **一键触发**：在任何输入框输入 `/` 即可调用提示词库
 - **智能搜索**：实时关键词匹配，基于使用频率智能排序
 - **无缝插入**：选择即插入，支持键盘和鼠标操作
 - **响应迅速**：本地优化，响应时间 < 200ms
@@ -67,7 +67,7 @@ Prompt Master Extension 通过"保存→管理→优化→使用"的完整闭环
 
 采用现代化分布式架构，确保高可用性、可扩展性和优秀用户体验：
 
-\`\`\`mermaid
+```mermaid
 graph TB
     subgraph "用户环境"
         User["👤 用户"]
@@ -111,11 +111,11 @@ graph TB
 
     %% 数据同步
     Firebase -.->|实时同步| Background
-\`\`\`
+```
 
 ### 前端组件架构
 
-\`\`\`mermaid
+```mermaid
 graph TB
     subgraph "用户界面层 (UI Layer)"
         App["📱 App.tsx<br/>主应用入口"]
@@ -159,7 +159,102 @@ graph TB
     StorageService --> ChromeStorage
     StorageService --> CloudStorage
     CloudStorage --> FirestoreListener
-\`\`\`
+```
+
+### 核心业务流程时序图
+
+以下时序图展示了用户从触发快捷键到获得优化提示词的完整业务流程，体现了系统的模块化设计和数据流控制：
+
+```mermaid
+sequenceDiagram
+    participant U as 👤 用户
+    participant CS as 📄 Content Script
+    participant BG as ⚙️ Background
+    participant SP as 📱 Side Panel
+    participant LS as 💾 Local Storage
+    participant FS as 🔥 Firestore
+    participant API as 🧠 Optimization API
+    participant UI as 🎨 Quick Command UI
+
+    Note over U, UI: 场景：用户在ChatGPT页面使用快捷输入功能
+
+    %% 阶段1: 触发检测
+    U->>CS: 在输入框输入 "/"
+    CS->>CS: 检测关键字符
+    CS->>BG: 发送触发事件
+    Note right of CS: 实时DOM监听<br/>无侵入式检测
+
+    %% 阶段2: 数据获取
+    BG->>LS: 读取本地提示词缓存
+    LS-->>BG: 返回缓存数据
+    
+    alt 缓存命中
+        BG->>UI: 直接显示快捷选择器
+    else 缓存失效或空
+        BG->>FS: 请求云端数据同步
+        FS-->>BG: 返回最新提示词库
+        BG->>LS: 更新本地缓存
+        BG->>UI: 显示快捷选择器
+    end
+
+    Note over BG, FS: 智能缓存策略<br/>离线优先，云端同步
+
+    %% 阶段3: 用户交互
+    UI->>U: 展示提示词列表
+    U->>UI: 搜索/选择提示词
+    UI->>BG: 传递用户选择
+    
+    %% 阶段4: 数据处理
+    BG->>LS: 更新使用统计
+    BG->>CS: 发送插入指令
+    CS->>CS: 替换输入内容
+    CS->>U: 提示词插入完成
+
+    Note over CS, U: 无缝替换体验<br/>保持光标位置
+
+    %% 阶段5: AI优化流程 (可选)
+    alt 用户选择优化
+        U->>SP: 打开优化面板
+        SP->>BG: 请求优化服务
+        BG->>API: 调用AI优化接口
+        
+        Note over API: GPT-4驱动<br/>多策略优化
+        
+        API-->>BG: 返回优化建议
+        BG->>SP: 展示优化结果
+        SP->>U: 显示对比和选择
+        
+        opt 用户确认优化
+            U->>SP: 确认采用优化版本
+            SP->>BG: 保存优化结果
+            BG->>LS: 更新本地数据
+            BG->>FS: 同步到云端
+        end
+    end
+
+    %% 阶段6: 数据同步
+    BG->>FS: 异步上传使用数据
+    Note right of FS: 用户行为分析<br/>个性化推荐数据
+
+    Note over U, UI: 完整闭环：触发 → 获取 → 选择 → 插入 → 优化 → 同步
+```
+
+**时序图亮点分析：**
+
+🎯 **产品**
+- **用户体验优先**：200ms响应时间，离线优先策略
+- **业务闭环设计**：从触发到同步的完整数据流
+- **异常处理机制**：缓存降级、网络容错
+
+🏗️ **架构**
+- **模块化解耦**：各组件职责清晰，接口标准化
+- **数据流控制**：本地缓存 + 云端同步的双重保障
+- **性能优化策略**：智能缓存、异步处理、批量同步
+
+💼 **商业**
+- **使用数据收集**：为产品迭代提供数据支撑
+- **个性化基础**：用户行为分析支持智能推荐提示词
+- **付费转化设计**：优化功能作为Pro版本差异化价值
 
 ### 技术栈选择
 
@@ -224,10 +319,10 @@ graph TB
 ### 用户使用指南
 
 1. **安装扩展**
-   \`\`\`bash
+   ```bash
    # 从Chrome Web Store安装 (即将上线)
    # 或从源码构建 (见下方开发指南)
-   \`\`\`
+   ```
 
 2. **首次设置**
    - 创建账户或登录
@@ -236,37 +331,37 @@ graph TB
 
 3. **开始使用**
    - 访问任意AI平台
-   - 按 \`/\` 键打开提示词选择器
+   - 按 `/` 键打开提示词选择器
    - 选择提示词，享受效率提升！
 
 ### 开发者指南
 
 1. **克隆项目**
-   \`\`\`bash
+   ```bash
    git clone https://github.com/YUHAO-corn/prompt-master-extension.git
    cd prompt-master-extension
-   \`\`\`
+   ```
 
 2. **环境配置**
-   \`\`\`bash
+   ```bash
    # 复制环境配置文件
    cp .env.example .env.local
    
    # 编辑 .env.local 配置 Firebase 等服务
    # 详见 .env.example 中的说明
-   \`\`\`
+   ```
 
 3. **安装依赖**
-   \`\`\`bash
+   ```bash
    # 扩展依赖
    cd extension && npm install
    
    # 后端依赖
    cd ../backend && npm install
-   \`\`\`
+   ```
 
 4. **启动开发**
-   \`\`\`bash
+   ```bash
    # 启动后端服务
    cd backend && npm run dev
    
@@ -274,7 +369,7 @@ graph TB
    cd extension && npm run build:dev
    
    # 在Chrome中加载: chrome://extensions/ > 加载已解压的扩展程序 > extension/build/
-   \`\`\`
+   ```
 
 ---
 
